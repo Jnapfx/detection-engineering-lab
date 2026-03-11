@@ -333,7 +333,7 @@ Cybersecurity / SOC Analyst
 Portfolio:
 
 ```
-design.javiernapoles.com
+security.javiernapoles.com
 ```
 
 ---
