@@ -1,4 +1,4 @@
-# Microsoft Sentinel Brute Force Attack Investigation
+# Microsoft Sentinel Brute-Force Authentication Investigation
 
 Author: Javier Napoles  
 Focus: SOC Analyst / SC-200 Preparation  
