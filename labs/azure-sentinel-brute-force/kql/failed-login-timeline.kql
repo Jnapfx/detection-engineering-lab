@@ -1,0 +1,10 @@
+// failed-login-timeline.kql
+// Purpose: Visualize the attack progression over time in 5-minute buckets
+// Use case: Determine whether the attack was sustained or pulsed — indicates automated tooling
+// Investigation step: Run after identifying the attacking IP to analyze attack behavior
+// Visualization: Render as time chart in Sentinel
+
+SecurityEvent
+| where EventID == 4625
+| summarize Attempts = count() by bin(TimeGenerated, 5m)
+| sort by TimeGenerated asc

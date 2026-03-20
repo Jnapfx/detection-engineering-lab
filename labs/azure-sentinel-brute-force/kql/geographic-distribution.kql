@@ -1,0 +1,13 @@
+// geographic-distribution.kql
+// Purpose: Visualize the geographic origin of brute-force attempts
+// Use case: Identify which countries are generating the most failed logins
+// Investigation step: Run after confirming high-volume failures to understand attack spread
+// Visualization: Render as pie chart in Sentinel for geographic breakdown
+
+SecurityEvent
+| where EventID == 4625
+| where isnotempty(IpAddress)
+| extend geo = geo_info_from_ip_address(IpAddress)
+| extend Country = tostring(geo.country)
+| summarize Attempts = count() by Country
+| sort by Attempts desc

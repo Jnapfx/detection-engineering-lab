@@ -1,0 +1,9 @@
+// failed-authentication-events.kql
+// Purpose: Surface all failed login attempts (EventID 4625) in the environment
+// Use case: Starting point for any authentication investigation — hunting query, not an alert rule
+// Investigation step: Run first to establish scope before narrowing by IP or account
+
+SecurityEvent
+| where EventID == 4625
+| project TimeGenerated, Account, IpAddress, Computer, LogonType
+| sort by TimeGenerated desc

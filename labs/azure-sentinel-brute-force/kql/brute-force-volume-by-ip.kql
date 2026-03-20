@@ -1,0 +1,11 @@
+// brute-force-volume-by-ip.kql
+// Purpose: Rank source IPs by total failed login attempts
+// Use case: Identify the top attacking IP addresses in the environment
+// Investigation step: Run after failed-authentication-events.kql to pinpoint the source
+// Finding in this lab: 139.0.12.92 generated 446 failed attempts — confirmed brute-force
+
+SecurityEvent
+| where EventID == 4625
+| where isnotempty(IpAddress)
+| summarize FailedAttempts = count() by IpAddress
+| sort by FailedAttempts desc

@@ -10,9 +10,11 @@ Environment: Microsoft Azure Security Ecosystem
 
 ## Overview
 
-This investigation documents a simulated security incident analyzed using **Microsoft Sentinel**. The objective was to identify, investigate, and understand a brute-force authentication attempt targeting an Azure virtual machine.
+This investigation documents a simulated security incident analyzed using **Microsoft Sentinel**. The objective was to identify, investigate, and understand brute-force authentication attempts targeting an Azure virtual machine.
 
-The analysis focused on authentication events collected from Windows Security logs and ingested into Microsoft Sentinel.
+During the lab setup, the virtual machine was unintentionally exposed to the public internet via RDP. Shortly after deployment, the system began receiving real-world brute-force login attempts from multiple geographic locations.
+
+This behavior was leveraged as a learning opportunity to analyze attacker activity using Microsoft Sentinel.
 
 ---
 
@@ -26,13 +28,32 @@ Data Table: SecurityEvent
 
 ---
 
+## Infrastructure Exposure Analysis
+
+During the investigation, it was identified that the virtual machine was publicly exposed to the internet.
+
+The Network Security Group (NSG) associated with the VM contained the following inbound rule:
+
+- Source: Any (0.0.0.0/0)
+- Destination Port: 3389 (RDP)
+- Protocol: TCP
+- Action: Allow
+
+![NSG Rule](screenshots/nsg_rdp_exposed.png)
+
+This configuration allowed any external IP address to attempt remote access to the system.
+
+As a result, the virtual machine became a target for automated brute-force attacks originating from multiple geographic locations.
+
+
+
 # Incident Summary
 
 During routine log analysis, multiple failed authentication attempts were detected against the virtual machine **sc200-vm1**.
 
 Further investigation revealed:
 
-- 423 failed login attempts
+- 446 failed login attempts
 - originating from a single external IP address
 - targeting the same user account
 - occurring over a sustained period of time
@@ -93,7 +114,7 @@ SecurityEvent
 Results showed:
 
 IP Address: **139.0.12.92**  
-Failed Attempts: **423**
+Failed Attempts: **446**
 
 This indicates a clear brute-force attempt originating from a single external source.
 
@@ -115,7 +136,7 @@ SecurityEvent
 Results showed:
 
 IP Address: **139.0.12.92**  
-Failed Attempts: **423**
+Failed Attempts: **446**
 
 This confirms a high-volume brute-force attempt.
 
@@ -198,7 +219,7 @@ The investigation identified a high-volume brute-force authentication attempt ta
 
 Key observations:
 
-- 423 failed authentication attempts
+- 446 failed authentication attempts
 - Attack originating from IP **139.0.12.92**
 - Repeated login attempts targeting the same account
 - Attack behavior consistent with automated brute-force activity

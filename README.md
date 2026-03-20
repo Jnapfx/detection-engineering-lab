@@ -1,56 +1,47 @@
 # Detection Engineering Lab
 
-## Overview
-
-This repository documents the development of a cloud-native detection engineering lab built within the Microsoft security ecosystem (Azure, Microsoft Sentinel, and Defender XDR).
-
-The purpose of this project is to design, implement, and document practical detection workflows in a structured and reproducible manner. While aligned with the SC-200 (Microsoft Security Operations Analyst) certification objectives, the primary focus is on hands-on detection engineering and threat investigation.
-
-This is not a study repository. It is an implementation repository.
+**Author:** Javier Napoles  
+**Focus:** SC-200 (Microsoft Security Operations Analyst) preparation through hands-on lab work  
+**Environment:** Microsoft Azure — Sentinel, Log Analytics, Defender XDR  
 
 ---
 
-## Background
+## About This Repository
 
-Prior to this project, I designed and operated a full SOC lab using Wazuh, where I:
+This repository documents my preparation for the SC-200 certification through practical, hands-on work in the Microsoft security stack.
 
-- Implemented and tuned detection rules  
-- Simulated adversarial techniques aligned with MITRE ATT&CK  
-- Investigated endpoint and authentication telemetry  
-- Performed rule optimization to reduce false positives  
-- Documented detection logic and investigation workflows  
+It is organized into two sections:
 
-This lab extends those capabilities into the Microsoft security stack, with emphasis on Sentinel-based analytics, KQL detection logic, and XDR telemetry correlation.
+- **`docs/`** — Study notes covering core concepts: SOC fundamentals, Azure architecture, Microsoft Sentinel, KQL, and Defender XDR. These serve as reference material alongside the labs.
+- **`labs/`** — Hands-on investigations built in a live Azure environment. Each lab includes detection logic, KQL queries, MITRE ATT&CK mapping, and structured analysis.
 
----
-
-## Objectives
-
-The objectives of this repository are:
-
-- Design and document end-to-end log ingestion architecture  
-- Develop KQL-based detection rules  
-- Map detections to MITRE ATT&CK techniques  
-- Perform structured incident investigations  
-- Apply detection tuning methodologies  
-- Correlate identity, endpoint, and cloud telemetry  
-- Maintain reproducible lab documentation  
+Prior to this project, I built and operated a full SOC lab using Wazuh — implementing detection rules, simulating adversarial techniques, and tuning rules against real telemetry. This repo extends that work into the Microsoft security ecosystem.
 
 ---
 
-## Architecture
+## Labs
 
-The lab is fully cloud-based and follows this simplified architecture:
+| Lab | Description | Status |
+|---|---|---|
+| [Azure Sentinel Brute-Force Investigation](labs/azure-sentinel-brute-force/README.md) | Detection and analysis of a real-world RDP brute-force attack using Microsoft Sentinel | Complete |
+| Future Lab 2 | TBD | Planned |
+| Future Lab 3 | TBD | Planned |
 
-Azure Virtual Machine  
-→ Azure Monitor Agent  
-→ Log Analytics Workspace  
-→ Microsoft Sentinel  
-→ Analytics Rules (KQL)  
-→ Alerts and Incidents  
-→ Investigation and Classification  
+---
 
-All components are deployed in Azure to simulate a realistic enterprise monitoring environment.
+## Lab Architecture
+
+All labs run on this cloud-based pipeline:
+
+```
+Azure Virtual Machine
+→ Azure Monitor Agent
+→ Log Analytics Workspace
+→ Microsoft Sentinel
+→ Analytics Rules (KQL)
+→ Alerts and Incidents
+→ Investigation and Classification
+```
 
 ---
 
@@ -63,70 +54,30 @@ detection-engineering-lab/
 │   ├── soc-fundamentals.md
 │   ├── azure-core-concepts.md
 │   ├── sentinel-architecture.md
-│   └── defender-overview.md
-│
-├── labs/
-│   ├── lab-01-azure-foundation/
-│   │   └── README.md
-│   │
-│   ├── lab-02-log-ingestion/
-│   │   └── README.md
-│   │
-│   └── lab-03-basic-detection-rule/
+│   ├── kql-fundamentals.md
+│   ├── defender-overview.md
+│   └── Microsoft_Sentinel_SOC_Lab_Setup_Guide/
 │       └── README.md
 │
-├── kql/
-│   ├── failed-logins.kql
-│   ├── suspicious-powershell.kql
-│   └── brute-force-detection.kql
-│
-├── detection-notes/
-│   ├── mitre-mapping.md
-│   ├── detection-lifecycle.md
-│   └── tuning-methodology.md
-│
-└── README.md
+└── labs/
+    └── azure-sentinel-brute-force/
+        ├── README.md
+        ├── kql/
+        ├── detection-notes/
+        │   ├── mitre-mapping.md
+        │   └── tuning-methodology.md
+        ├── mitigations/
+        └── screenshots/
 ```
 
-
 ---
 
-## Core Focus Areas
+## Each Lab Follows This Structure
 
-- Microsoft Sentinel configuration and data connectors  
-- Log Analytics workspace design  
-- KQL query development and optimization  
-- Analytics rule creation and tuning  
-- Incident lifecycle management  
-- MITRE ATT&CK mapping  
-- Cross-platform detection methodology (Wazuh to Sentinel transition)  
-
----
-
-## Methodology
-
-Each lab implementation follows a consistent structure:
-
-1. Objective  
-2. Environment setup  
-3. Detection logic  
-4. Query design  
-5. Incident generation  
-6. Investigation workflow  
-7. Tuning and improvement  
-8. Lessons learned  
-
-This ensures repeatability and measurable improvement over time.
-
----
-
-## Long-Term Direction
-
-This project supports continued growth toward:
-
-- Detection Engineering  
-- Threat Hunting  
-- Cloud Security Engineering  
-- Advanced Security Operations  
-
-The repository will evolve as detection complexity increases and automation capabilities are integrated.
+1. Environment setup  
+2. Detection logic and query development  
+3. Investigation workflow  
+4. MITRE ATT&CK mapping  
+5. Detection tuning  
+6. Mitigations  
+7. Lessons learned  

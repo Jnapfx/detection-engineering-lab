@@ -1,4 +1,0 @@
-SecurityEvent
-| where EventID == 4625
-| summarize Attempts = count() by bin(TimeGenerated, 5m)
-| sort by TimeGenerated asc

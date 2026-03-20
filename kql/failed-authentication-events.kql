@@ -1,4 +1,0 @@
-SecurityEvent
-| where EventID == 4625
-| project TimeGenerated, Account, IpAddress, Computer, LogonType
-| sort by TimeGenerated desc

@@ -1,0 +1,11 @@
+// successful-login-check.kql
+// Purpose: Check for successful logins (EventID 4624) from external IPs
+// Use case: Confirm whether the brute-force attack succeeded — changes incident severity entirely
+// Investigation step: Run last to determine if compromise occurred
+// Finding in this lab: No successful logins from 139.0.12.92 — attack was unsuccessful
+
+SecurityEvent
+| where EventID == 4624
+| where isnotempty(IpAddress)
+| project TimeGenerated, Account, IpAddress, Computer, LogonType
+| sort by TimeGenerated desc
