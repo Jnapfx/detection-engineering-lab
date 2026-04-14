@@ -477,6 +477,44 @@ SecurityEvent
 
 ---
 
+## 8. Query (Tabular) Operators
+
+| Operator | Description |
+|----------|------------|
+| `where` | Filters rows based on condition |
+| `project` | Selects specific columns |
+| `project-away` | Removes specific columns |
+| `extend` | Creates calculated columns |
+| `summarize` | Aggregates data (count, avg, etc.) |
+| `sort by` | Orders results |
+| `top` | Returns top N records |
+| `limit` / `take` | Limits number of rows |
+| `distinct` | Returns unique values |
+| `count` | Counts rows |
+
+---
+
+## 9. Data Combination Operators
+
+| Operator | Description |
+|----------|------------|
+| `union` | Combines rows from multiple tables |
+| `join` | Merges tables based on a condition |
+| `lookup` | Simplified join for enrichment |
+
+### Example
+```kql
+SecurityEvent
+| union SigninLogs
+```
+
+```kql
+SecurityEvent
+| join SigninLogs on Account
+```
+
+---
+
 ## Example SOC Query
 
 ```kql
@@ -497,6 +535,10 @@ SecurityEvent
 - `contains` is more flexible but less efficient
 - `==` is case-sensitive
 - `=~` is case-insensitive
+- `union` does not require matching columns
+- `join` requires a common column
+- `lookup` is optimized for enrichment scenarios
+
 
 # Conclusion
 
