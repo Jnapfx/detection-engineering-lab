@@ -21,7 +21,7 @@
 13. [Troubleshooting](#13-troubleshooting)  
 14. [Common Mistakes](#14-common-mistakes)  
 15. [Mental Model](#15-mental-model)  
-
+16. [KQL Operators Cheat Sheet](#16-kql-operators-cheat-sheet)  
 ---
 
 # 1. Architecture
@@ -362,6 +362,141 @@ Logs → Alerts → Incidents
 - Workbook = Visualization  
 
 ---
+
+# 16. KQL Operators Cheat Sheet
+
+## Overview
+This document provides a quick reference for commonly used KQL (Kusto Query Language) operators used in Microsoft Sentinel and Azure Monitor.
+
+---
+
+## 1. Comparison Operators
+
+| Operator | Description |
+|----------|------------|
+| `==` | Equal (case-sensitive) |
+| `!=` | Not equal |
+| `>` | Greater than |
+| `<` | Less than |
+| `>=` | Greater than or equal |
+| `<=` | Less than or equal |
+| `=~` | Equal (case-insensitive) |
+| `!~` | Not equal (case-insensitive) |
+
+---
+
+## 2. String Operators
+
+| Operator | Description |
+|----------|------------|
+| `has` | Contains full word |
+| `!has` | Does not contain full word |
+| `contains` | Contains substring |
+| `!contains` | Does not contain substring |
+| `startswith` | Starts with |
+| `endswith` | Ends with |
+| `matches regex` | Matches regular expression |
+
+---
+
+## 3. Set Operators
+
+| Operator | Description |
+|----------|------------|
+| `in` | Matches any value in a list |
+| `!in` | Does not match any value in list |
+| `in~` | Case-insensitive match in list |
+| `!in~` | Case-insensitive not in list |
+
+### Example
+```kql
+SecurityEvent
+| where EventID in (4624, 4625, 4634)
+```
+
+---
+
+## 4. Logical Operators
+
+| Operator | Description |
+|----------|------------|
+| `and` | Logical AND |
+| `or` | Logical OR |
+| `not` | Logical NOT |
+
+### Example
+```kql
+SecurityEvent
+| where EventID == 4625 and Account =~ "admin"
+```
+
+---
+
+## 5. Arithmetic Operators
+
+| Operator | Description |
+|----------|------------|
+| `+` | Addition |
+| `-` | Subtraction |
+| `*` | Multiplication |
+| `/` | Division |
+| `%` | Modulus |
+
+---
+
+## 6. Special Operators
+
+| Operator | Description |
+|----------|------------|
+| `between` | Range filtering |
+| `has_any` | Contains any of multiple values |
+| `has_all` | Contains all values |
+| `isempty()` | Field is empty |
+| `isnotempty()` | Field is not empty |
+
+### Example
+```kql
+SecurityEvent
+| where EventID between (4624 .. 4634)
+```
+
+---
+
+## 7. Time Functions
+
+| Function | Description |
+|----------|------------|
+| `ago()` | Filters data from past time |
+| `now()` | Current timestamp |
+
+### Example
+```kql
+SecurityEvent
+| where TimeGenerated > ago(24h)
+```
+
+---
+
+## Example SOC Query
+
+```kql
+SecurityEvent
+| where TimeGenerated > ago(24h)
+| where EventID == 4625
+| where Account !in ("SYSTEM", "ANONYMOUS LOGON")
+| where Computer has "vm"
+| summarize FailedAttempts = count() by Account, Computer
+| sort by FailedAttempts desc
+```
+
+---
+
+## Notes
+
+- `has` is faster and searches full words only
+- `contains` is more flexible but less efficient
+- `==` is case-sensitive
+- `=~` is case-insensitive
 
 # Conclusion
 
