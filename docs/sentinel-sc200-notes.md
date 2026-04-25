@@ -22,6 +22,7 @@
 14. [Common Mistakes](#14-common-mistakes)  
 15. [Mental Model](#15-mental-model)  
 16. [KQL Operators Cheat Sheet](#16-kql-operators-cheat-sheet)  
+17. [Azure AD Sign-in Error Codes Cheat Sheet](#17-azure-ad-sign-in-error-codes-cheat-sheet)
 ---
 
 # 1. Architecture
@@ -538,8 +539,94 @@ SecurityEvent
 - `union` does not require matching columns
 - `join` requires a common column
 - `lookup` is optimized for enrichment scenarios
+---
 
+# 17 Azure AD Sign-in Error Codes Cheat Sheet 
 
+## Overview
+This reference contains the most important Azure AD Sign-in error codes used for threat detection and investigation in Microsoft Sentinel.
+
+---
+
+## 🔴 1. Credential Attacks (Brute Force / Password Spraying)
+
+| Error Code | Description | SOC Insight |
+|-----------|------------|------------|
+| 50034 | User does not exist | Username enumeration attempt |
+| 50126 | Invalid username or password | Password spraying / brute force |
+| 50053 | Account locked | Multiple failed attempts triggered lockout |
+
+---
+
+## 🔐 2. MFA-Related Events
+
+| Error Code | Description | SOC Insight |
+|-----------|------------|------------|
+| 50079 | MFA required | Password correct, second factor missing |
+| 50076 | MFA required due to policy | Conditional Access enforced MFA |
+
+---
+
+## 🌍 3. Conditional Access / Policy Issues
+
+| Error Code | Description | SOC Insight |
+|-----------|------------|------------|
+| 53003 | Blocked by Conditional Access | Login blocked due to policy (location, risk, etc.) |
+| 53000 | Device not compliant | Device does not meet security requirements |
+
+---
+
+## ⚠️ 4. Other Relevant Events
+
+| Error Code | Description | SOC Insight |
+|-----------|------------|------------|
+| 50055 | Password expired | Could indicate outdated credentials |
+| 50140 | Session canceled | User or system interrupted login |
+
+---
+
+## 🧠 Attack Pattern (SOC Perspective)
+
+Typical attack flow:
+
+1. **50034** → Attacker tests valid usernames  
+2. **50126** → Attempts multiple passwords  
+3. **50053** → Account gets locked  
+4. **50079** → Correct password found, MFA stops attacker  
+
+---
+
+## 🔍 Sample KQL Query
+
+```kql
+SigninLogs
+| where TimeGenerated > ago(1h)
+| where ResultType in ("50034", "50126", "50053", "50079")
+| summarize Attempts = count() by ResultType, IPAddress
+| sort by Attempts desc
+```
+
+---
+
+## 🎯 Detection Use Case
+
+- Identify password spraying attacks
+- Detect brute force attempts
+- Correlate successful credential compromise blocked by MFA
+- Monitor suspicious IP activity
+
+---
+
+## Notes
+
+- Always correlate error codes with:
+  - IP Address
+  - Location
+  - UserPrincipalName
+  - AppDisplayName
+- Combine with threat intelligence for better detection accuracy
+
+---
 # Conclusion
 
 This document provides a structured and practical overview of Microsoft Sentinel concepts for SC-200 preparation and SOC analyst workflows.
